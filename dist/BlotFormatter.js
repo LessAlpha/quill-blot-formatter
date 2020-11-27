@@ -68,6 +68,11 @@ var BlotFormatter = function () {
   _createClass(BlotFormatter, [{
     key: 'show',
     value: function show(spec) {
+
+      // @Less-11/27/2020 添加，修补不可编辑状态下还能增加插件浮动层的问题
+      const e = this.quill.root.contentEditable
+      if(e==='false')  return
+      
       this.currentSpec = spec;
       this.currentSpec.setSelection();
       this.setUserSelect('none');
@@ -84,7 +89,7 @@ var BlotFormatter = function () {
 
       this.currentSpec.onHide();
       this.currentSpec = null;
-      this.quill.root.parentNode.removeChild(this.overlay);
+      if(this.overlay.parentNode)  this.quill.root.parentNode.removeChild(this.overlay);
       this.overlay.style.setProperty('display', 'none');
       this.setUserSelect('');
       this.destroyActions();

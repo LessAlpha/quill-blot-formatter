@@ -41,6 +41,14 @@ var DeleteAction = function (_Action) {
         return;
       }
 
+      // @Less-11/27/2020 添加，修补不可编辑状态下还能删除图片的问题
+      const c = _this.formatter.quill.root.contentEditable
+      if(c==="false")   return
+
+      // @Less-11/27/2020 添加，修补没有工具浮层状态下还能删除图片的问题
+      const l = _this.formatter.overlay.parentNode
+      if(!l)  return
+
       // delete or backspace
       if (e.keyCode === 46 || e.keyCode === 8) {
         var blot = _quill2.default.find(_this.formatter.currentSpec.getTargetElement());
